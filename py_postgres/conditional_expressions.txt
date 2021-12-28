@@ -1,0 +1,88 @@
+
+CASE (similar to IF-ELSE)
+
+CASE
+ WHEN condition1 THEN result1
+ WHEN condition2 THEN result2
+ ELSE result3
+END
+
+in practice: 
+
+select column
+CASE
+	WHEN column=1 THEN 'one' 
+	WHEN column=2 THEN 'two'
+	ELSE 'other'
+END
+FROM table;
+
+
+
+CASE-EXPRESSION
+
+CASE EXPRESSION
+ WHEN value THEN result1
+ WHEN value THEN result2
+ ELSE result3
+END
+
+in practice:
+
+select column
+CASE a <- I am saying the expression is the column itself
+	WHEN 1 THEN 'one' 
+	WHEN 2 THEN 'two'
+	ELSE 'other'
+END
+FROM table;
+
+
+-- COALESCENCE
+
+Return the first not-null value from a list of values
+Useful to replace with condition if the value is null
+
+select item, (price, COALESCE(discount,0)) as discounted_price from ...
+
+
+-- CAST
+Convert one data type into another
+
+select cast('5' as integer)
+
+select '5'::integer
+
+-- NULLIF
+
+Return Null if the two arguments are equal, otherwise returns the first
+
+NULLIF(10,10) returns Null
+NULLIF(10,12) returns 10
+
+Usually used to 
+
+-- VIEWS
+
+The view is an object that holds a Query. Every time you call a view the query is executed
+
+create view name_of_view as
+select... from...
+
+
+create or replace views name_of_view as
+select... from...
+
+drop view if exists name_of_view
+
+alter view name_of_view as name_of_view2
+
+drop view
+
+-- IMPORT/EXPORT in DBeaver
+
+
+-- SQL functions
+
+
+
