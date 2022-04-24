@@ -1,1 +1,5 @@
 .ipynb_checkpoints/
+py_geocoding/address.gdb/a00000001.freelist
+*.gdb
+py_geocoding/
+__pycache__/
