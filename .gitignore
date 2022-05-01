@@ -3,3 +3,6 @@ py_geocoding/address.gdb/a00000001.freelist
 *.gdb
 py_geocoding/
 __pycache__/
+py_100_days/.idea
+poetry.lock
+.idea
