@@ -49,8 +49,27 @@ def get_input():
 
 
 # TODO 2: def insert_coin():
+def get_cash():
+    coin_types = {"quarter": 0.25, "dimes": 0.1, "nickel": 0.05, "pennies": 0.01}
+    total_amount = 0
+    for coin in coin_types:
+        amount = int(input(f"Please insert the number of {coin} in the machine: "))
+        total_amount = total_amount + (amount * coin_types[coin])
+    return total_amount
+
 
 # TODO 3: def check amount():
+def check_amount(choice_cost, total_amount):
+    if choice_cost > total_amount:
+        print(f"I'm sorry, the total amount inserted {total_amount} is not enough")
+        print(f"Here is your change of: {total_amount}")
+        return False
+    elif choice_cost < total_amount:
+        print(f"Your change is of: {total_amount - choice_cost}")
+        return True
+    else:
+        return True
+
 
 # TODO 4: def get_report():
 def get_report(session_resources):
@@ -63,13 +82,11 @@ def get_report(session_resources):
     print(f"Water: {session_resources['water']} ml")
     print(f"Milk: {session_resources['milk']} ml")
     print(f"Coffee: {session_resources['coffee']} ml")
-    print(f"Money: {session_resources['money']} ml")
+    print(f"Money: {session_resources['money']} dollars")
     return
 
 
-# TODO 4: def get_report():
-
-
+# TODO 4: def fill_resources():
 def fill_resources():
     """
     Function that takes no input. It initialises the resources in the machine (water, milk, coffee)
@@ -78,20 +95,6 @@ def fill_resources():
     # global resources
     session_resources = RESOURCES.copy()
     session_resources["money"] = 0
-    return session_resources
-
-
-def make_coffee(session_resources, choice):
-    """
-    :param: dictionary with the resources
-    :return: returns the updated resources disctionary after the cofee has been made
-    """
-    global MENU
-    ingredients = MENU[choice]["ingredients"]
-    resources_flag = check_resources(session_resources, choice, ingredients)
-    if not resources_flag:
-        return
-    session_resources = deduct_resources(session_resources, choice, ingredients)
     return session_resources
 
 
@@ -110,29 +113,50 @@ def deduct_resources(session_resources, ingredients):
     return session_resources
 
 
-def get_cash(choice):
+def add_amount(session_resources, total_amount):
+    session_resources["money"] = session_resources["money"] + total_amount
+    return session_resources
+
+
+def make_coffee(session_resources, choice):
+    """
+    :param: dictionary with the resources
+    :return: returns the updated resources' dictionary after the coffee has been made
+    """
     global MENU
     ingredients = MENU[choice]["ingredients"]
+    choice_cost = MENU[choice]["cost"]
+    resources_flag = check_resources(session_resources, ingredients)
+    if not resources_flag:
+        return False
+    total_amount = get_cash()
+    amount_flag = check_amount(choice_cost, total_amount)
+    if not amount_flag:
+        return True
+    session_resources = add_amount(session_resources, choice_cost)
+    session_resources = deduct_resources(session_resources, ingredients)
+    print(session_resources)
+    return True
 
 
-def CoffeeMachine():
+def coffee_machine():
     # Initiate session resources
     session_resources = fill_resources()
-    # Get input from the user
-    choice = get_input()
-
-    if choice == "off":
-        exit()
-    elif choice == "report":
-        get_report(session_resources)
-    elif choice == "refill":
-        fill_resources()
-    else:
-        session_resources = make_coffee(session_resources, choice)
-
-    print(session_resources)
+    keep_coffee = True
+    while keep_coffee:
+        # Get input from the user
+        choice = get_input()
+        # Do different things depending on choices
+        if choice == "off":
+            keep_coffee = False
+        elif choice == "report":
+            get_report(session_resources)
+        elif choice == "refill":
+            fill_resources()
+        else:
+            keep_coffee = make_coffee(session_resources, choice)
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == "__main__":
-    CoffeeMachine("CoffeeMachine!")
+    coffee_machine()
