@@ -34,6 +34,7 @@ RESOURCES = {
     "coffee": 100,
 }
 
+
 # TODO 1: def get_input():
 def get_input():
     # correct_choice = False
